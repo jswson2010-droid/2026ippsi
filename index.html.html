@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="slides-format" content="viewport">
+    <title>한양대 에리카 입시설명회 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @theme {
+            --color-bg: #0a1628;
+            --color-bg-deep: #050e1a;
+            --color-surface: #112240;
+            --color-text: #e8f0fe;
+            --color-text-secondary: #a8bbd8;
+            --color-text-muted: #6b82a0;
+            --color-accent-1: #3b82f6;
+            --color-accent-2: #60a5fa;
+            --color-accent-3: #f59e0b;
+            --color-glass-bg: rgba(255,255,255,0.05);
+            --color-glass-border: rgba(255,255,255,0.10);
+            --color-vignette: rgba(0,0,0,0.45);
+            --font-display: 'Noto Serif KR', serif;
+            --font-body: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+    <style>
+        :root { --color-bg: #0a1628; --color-text: #e8f0fe; --glow-color-rgb: 59,130,246; }
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { background: var(--color-bg); margin: 0; }
+        body { font-family: 'Noto Sans KR', sans-serif; color: var(--color-text); overflow: hidden; height: 100vh; width: 100vw; }
+        .deck { width: 100vw; height: 100vh; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transform: scale(0.95); transition: opacity 0.7s ease, transform 0.7s ease; pointer-events: none; overflow: hidden; }
+        .slide.active { opacity: 1; transform: scale(1); pointer-events: all; }
+        .slide > .content { position: relative; z-index: 2; width: 100%; max-width: 1100px; padding: clamp(1.5rem, 3.5vw, 3.5rem); }
+        .nav-controls { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; z-index: 100; background: var(--color-glass-bg); backdrop-filter: blur(10px); padding: 10px 24px; border-radius: 40px; border: 1px solid var(--color-glass-border); }
+        .nav-btn { width: 38px; height: 38px; border: none; background: var(--color-glass-bg); color: var(--color-accent-1); border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .nav-btn:hover { background: var(--color-glass-border); }
+        .slide-dots { display: flex; gap: 6px; }
+        .slide-dots .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-glass-border); cursor: pointer; transition: background 0.3s, transform 0.3s; }
+        .slide-dots .dot.active { background: var(--color-accent-1); transform: scale(1.3); }
+        .slide-counter { font-size: 0.75rem; color: var(--color-text-muted); min-width: 40px; text-align: center; font-family: 'Noto Sans KR', sans-serif; }
+        .reveal { opacity: 0; transform: translateY(20px); }
+        .text-glow { text-shadow: 0 0 20px rgba(var(--glow-color-rgb), 0.5), 0 0 40px rgba(var(--glow-color-rgb), 0.2); }
+        .stat-glow { text-shadow: 0 0 30px rgba(var(--glow-color-rgb), 0.6), 0 0 60px rgba(var(--glow-color-rgb), 0.25); }
+        @keyframes glow-pulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(59,130,246,0.5), 0 0 40px rgba(59,130,246,0.2); }
+            50% { text-shadow: 0 0 30px rgba(59,130,246,0.8), 0 0 60px rgba(59,130,246,0.3); }
+        }
+        .glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+        @keyframes float-slow {
+            0% { transform: translate(0,0) scale(1); }
+            25% { transform: translate(60px,-50px) scale(1.12); }
+            50% { transform: translate(-40px,40px) scale(0.9); }
+            75% { transform: translate(50px,20px) scale(1.08); }
+            100% { transform: translate(0,0) scale(1); }
+        }
+        @keyframes float-drift {
+            0% { transform: translate(0,0) scale(1) rotate(0deg); }
+            33% { transform: translate(-50px,-60px) scale(1.15) rotate(3deg); }
+            66% { transform: translate(40px,30px) scale(0.88) rotate(-2deg); }
+            100% { transform: translate(0,0) scale(1) rotate(0deg); }
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .gradient-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        .blob { position: absolute; border-radius: 50%; filter: blur(80px); animation: float-slow 10s ease-in-out infinite; }
+        .blob:nth-child(2) { animation: float-drift 14s ease-in-out infinite; }
+        .blob:nth-child(3) { animation: float-slow 18s ease-in-out infinite reverse; }
+        .slide::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); background-repeat: repeat; background-size: 256px; opacity: 0.03; mix-blend-mode: overlay; }
+        .slide::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at center, transparent 50%, var(--color-vignette) 100%); }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } }
+
+        /* 커스텀 배지/태그 */
+        .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; }
+        .badge-blue { background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; }
+        .badge-amber { background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.4); color: #fcd34d; }
+        .badge-green { background: rgba(16,185,129,0.2); border: 1px solid rgba(16,185,129,0.4); color: #6ee7b7; }
+        .badge-red { background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; }
+
+        /* 테이블 스타일 */
+        .data-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.82rem; }
+        .data-table th { background: rgba(59,130,246,0.15); color: #93c5fd; padding: 8px 12px; text-align: center; font-weight: 700; border-bottom: 1px solid rgba(59,130,246,0.3); }
+        .data-table th:first-child { text-align: left; border-radius: 8px 0 0 0; }
+        .data-table th:last-child { border-radius: 0 8px 0 0; }
+        .data-table td { padding: 7px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; }
+        .data-table td:first-child { text-align: left; font-weight: 500; color: #e8f0fe; }
+        .data-table tr:hover td { background: rgba(255,255,255,0.04); }
+        .data-table .highlight { color: #60a5fa; font-weight: 700; }
+        .data-table .amber { color: #fcd34d; font-weight: 700; }
+        .data-table .green { color: #6ee7b7; font-weight: 700; }
+        .data-table .red { color: #fca5a5; }
+
+        /* 바 차트 */
+        .bar-track { background: rgba(255,255,255,0.06); border-radius: 6px; height: 22px; position: relative; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 6px; width: 0%; transition: width 0.8s ease; }
+        .bar-label { font-size: 0.78rem; color: #a8bbd8; min-width: 90px; }
+        .bar-value { font-size: 0.8rem; font-weight: 700; color: #60a5fa; min-width: 50px; text-align: right; }
+
+        /* 섹션 구분자 */
+        .section-divider { width: 48px; height: 3px; border-radius: 2px; background: linear-gradient(to right, #3b82f6, #60a5fa); margin-bottom: 16px; }
+
+        /* 카드 */
+        .glass-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.10); border-radius: 14px; padding: 20px 22px; transition: transform 0.2s, box-shadow 0.2s; }
+        .glass-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(59,130,246,0.15); }
+
+        /* 합격 비교 카드 */
+        .result-pass { border-left: 4px solid #22c55e; }
+        .result-fail { border-left: 4px solid #ef4444; }
+        .result-wait { border-left: 4px solid #f59e0b; }
+
+        /* 진행바 */
+        .prog-bar { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden; margin-top: 6px; }
+        .prog-fill { height: 100%; border-radius: 4px; width: 0%; transition: width 0.8s ease; }
+    </style>
+</head>
+<body>
+
+<div class="mouse-spotlight" style="position:fixed;inset:0;z-index:99;pointer-events:none;"></div>
+
+<div class="deck">
+
+    <!-- ===== SLIDE 1: 타이틀 ===== -->
+    <div class="slide slide-1 active" data-slide="1">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:520px;height:520px;top:-120px;right:-100px;background:#1d4ed8;opacity:0.18;"></div>
+            <div class="blob" style="width:300px;height:300px;bottom:-80px;left:-60px;background:#7c3aed;opacity:0.14;"></div>
+            <div class="blob" style="width:200px;height:200px;top:45%;left:12%;background:#0891b2;opacity:0.12;"></div>
+        </div>
+        <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1;"></canvas>
+        <div class="content text-center">
+            <div style="font-size:80px;margin-bottom:18px;animation:float 3.5s ease-in-out infinite;" class="reveal">🎓</div>
+            <div class="reveal" style="display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);border-radius:20px;padding:4px 16px;margin-bottom:18px;">
+                <span style="width:6px;height:6px;border-radius:50%;background:#3b82f6;display:inline-block;"></span>
+                <span style="font-size:0.78rem;color:#93c5fd;letter-spacing:0.06em;font-weight:600;">교사 대상 입시설명회</span>
+            </div>
+            <h1 class="reveal" style="font-family:'Noto Serif KR',serif;font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;background:linear-gradient(135deg,#60a5fa,#93c5fd,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;margin-bottom:12px;">한양대학교 에리카(ERICA)</h1>
+            <p class="reveal" style="font-size:clamp(1rem,2vw,1.4rem);color:#a8bbd8;letter-spacing:4px;text-transform:uppercase;font-weight:300;margin-bottom:6px;">2026학년도 입학전형 완벽 분석</p>
+            <p class="reveal" style="font-size:0.85rem;color:#6b82a0;margin-top:10px;">입결 · 전형 방법 · 평가 기준 · 모의평가 피드백</p>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 2: 목차 ===== -->
+    <div class="slide slide-2" data-slide="2">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:350px;height:350px;top:-80px;right:-80px;background:#1d4ed8;opacity:0.10;"></div>
+            <div class="blob" style="width:250px;height:250px;bottom:-60px;left:-40px;background:#7c3aed;opacity:0.08;"></div>
+        </div>
+        <div class="content">
+            <div class="section-divider reveal"></div>
+            <h2 class="reveal" style="font-family:'Noto Serif KR',serif;font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;margin-bottom:24px;">목차 <span style="color:#6b82a0;font-size:1rem;font-weight:400;">Table of Contents</span></h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                <div class="glass-card reveal" style="display:flex;align-items:center;gap:14px;">
+                    <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">1</div>
+                    <div>
+                        <div style="font-weight:700;font-size:0.9rem;margin-bottom:2px;">전형 개요 및 모집 인원</div>
+                        <div style="font-size:0.75rem;color:#6b82a0;">교과 · 종합 · 특수 전형</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="display:flex;align-items:center;gap:14px;">
+                    <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">2</div>
+                    <div>
+                        <div style="font-weight:700;font-size:0.9rem;margin-bottom:2px;">계열별 입결 데이터</div>
+                        <div style="font-size:0.75rem;color:#6b82a0;">일반고 · 자사고 · 특목고</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="display:flex;align-items:center;gap:14px;">
+                    <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">3</div>
+                    <div>
+                        <div style="font-weight:700;font-size:0.9rem;margin-bottom:2px;">학생부종합 평가 기준</div>
+                        <div style="font-size:0.75rem;color:#6b82a0;">학업 · 진로(40%) · 공동체 역량</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="display:flex;align-items:center;gap:14px;">
+                    <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">4</div>
+                    <div>
+                        <div style="font-weight:700;font-size:0.9rem;margin-bottom:2px;">글로벌문화통상학부 분석</div>
+                        <div style="font-size:0.75rem;color:#6b82a0;">모의평가 3인 비교 · 입결</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="display:flex;align-items:center;gap:14px;">
+                    <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#dc2626);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">5</div>
+                    <div>
+                        <div style="font-weight:700;font-size:0.9rem;margin-bottom:2px;">특수 전형 · 추천 학과</div>
+                        <div style="font-size:0.75rem;color:#6b82a0;">계약학과 · 입결 낮은 학과</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="display:flex;align-items:center;gap:14px;">
+                    <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#0891b2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">6</div>
+                    <div>
+                        <div style="font-weight:700;font-size:0.9rem;margin-bottom:2px;">2028학년도 변경 사항</div>
+                        <div style="font-size:0.75rem;color:#6b82a0;">수능최저 강화 · 논술 부활</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 3: 전형 개요 ===== -->
+    <div class="slide slide-3" data-slide="3">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:300px;height:300px;top:-60px;right:-60px;background:#1d4ed8;opacity:0.09;"></div>
+            <div class="blob" style="width:220px;height:220px;bottom:-50px;left:-30px;background:#0891b2;opacity:0.07;"></div>
+        </div>
+        <div class="content">
+            <div class="section-divider reveal"></div>
+            <h2 class="reveal" style="font-family:'Noto Serif KR',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;margin-bottom:6px;">전형 개요</h2>
+            <p class="reveal" style="font-size:0.8rem;color:#6b82a0;margin-bottom:18px;">총 입학 정원 2,000명 | 전형별 주요 특징</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="glass-card reveal" style="border-left:4px solid #3b82f6;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                        <span style="font-size:1.3rem;">📋</span>
+                        <span style="font-weight:700;font-size:0.95rem;">학생부 교과 전형</span>
+                        <span class="badge badge-blue" style="margin-left:auto;">531명</span>
+                    </div>
+                    <div style="font-size:0.78rem;color:#a8bbd8;line-height:1.7;">
+                        <div>• 경쟁률 약 <strong style="color:#60a5fa;">5:1</strong> (추가합격 100%+)</div>
+                        <div>• 수능 최저: <strong style="color:#fcd34d;">국·영·수·탐 2합 7</strong></div>
+                        <div>• 최저 충족률: 지원자 <strong style="color:#60a5fa;">약 80%</strong></div>
+                        <div>• 추천 성적대: <strong style="color:#6ee7b7;">2등급 중반</strong></div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="border-left:4px solid #10b981;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                        <span style="font-size:1.3rem;">📁</span>
+                        <span style="font-weight:700;font-size:0.95rem;">학종 서류형</span>
+                        <span class="badge badge-green" style="margin-left:auto;">수능최저 無</span>
+                    </div>
+                    <div style="font-size:0.78rem;color:#a8bbd8;line-height:1.7;">
+                        <div>• 서류 100% (일괄 전형)</div>
+                        <div>• 경쟁률 평균 <strong style="color:#60a5fa;">15:1</strong></div>
+                        <div>• 70%컷: <strong style="color:#fcd34d;">2등급 중후반</strong></div>
+                        <div>• 평가: 학업 40% / 진로 <strong style="color:#f59e0b;">40%</strong> / 공동체 20%</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="border-left:4px solid #8b5cf6;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                        <span style="font-size:1.3rem;">🎤</span>
+                        <span style="font-weight:700;font-size:0.95rem;">학종 면접형</span>
+                        <span class="badge" style="background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:#c4b5fd;margin-left:auto;">전계열 60명</span>
+                    </div>
+                    <div style="font-size:0.78rem;color:#a8bbd8;line-height:1.7;">
+                        <div>• 경쟁률 <strong style="color:#fca5a5;">33.2:1</strong> (결시율 30%)</div>
+                        <div>• 1단계: 학업70% + 공동체30%</div>
+                        <div>• 2단계: 1단계70% + 면접30%</div>
+                        <div>• 면접: 면접관 3인, <strong style="color:#60a5fa;">10분 개별면접</strong></div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="border-left:4px solid #f59e0b;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                        <span style="font-size:1.3rem;">🎯</span>
+                        <span style="font-weight:700;font-size:0.95rem;">고른기회 전형</span>
+                        <span class="badge badge-amber" style="margin-left:auto;">사회배려대상자</span>
+                    </div>
+                    <div style="font-size:0.78rem;color:#a8bbd8;line-height:1.7;">
+                        <div>• 학과당 2~3명 모집</div>
+                        <div>• 합격선 <strong style="color:#6ee7b7;">3등급 초중반</strong>까지 하락</div>
+                        <div>• 서류형(2등급 중후반)보다 유리</div>
+                        <div>• ✅ 자격 해당 학생 <strong>적극 추천</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 4: 계열별 입결 ===== -->
+    <div class="slide slide-4" data-slide="4">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:300px;height:300px;top:-60px;right:-60px;background:#1d4ed8;opacity:0.09;"></div>
+            <div class="blob" style="width:220px;height:220px;bottom:-50px;left:-30px;background:#f59e0b;opacity:0.07;"></div>
+        </div>
+        <div class="content">
+            <div class="section-divider reveal"></div>
+            <h2 class="reveal" style="font-family:'Noto Serif KR',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;margin-bottom:6px;">계열별 최종 합격자 평균 등급</h2>
+            <p class="reveal" style="font-size:0.78rem;color:#6b82a0;margin-bottom:16px;">학생부종합 서류형 기준 | 일반고 합격자 비율 약 80%</p>
+            <table class="data-table reveal">
+                <thead>
+                    <tr>
+                        <th>계열</th>
+                        <th>주요 교과</th>
+                        <th>일반고</th>
+                        <th>자사고</th>
+                        <th>특목고</th>
+                        <th>경쟁률</th>
+                        <th>충원율</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>자연계열</td>
+                        <td>국영수<span style="color:#60a5fa;">과</span></td>
+                        <td class="highlight">2.79</td>
+                        <td>4.37</td>
+                        <td>6.64<span style="font-size:0.7rem;color:#6b82a0;">(과고)</span></td>
+                        <td>17.4:1</td>
+                        <td class="green">100%+</td>
+                    </tr>
+                    <tr>
+                        <td>인문계열</td>
+                        <td>국영수<span style="color:#f59e0b;">사</span></td>
+                        <td class="highlight">2.98</td>
+                        <td>4.34</td>
+                        <td>4.50<span style="font-size:0.7rem;color:#6b82a0;">(외고)</span></td>
+                        <td>19:1</td>
+                        <td class="amber">80%</td>
+                    </tr>
+                    <tr>
+                        <td>상경계열</td>
+                        <td>국영수<span style="color:#f59e0b;">사</span></td>
+                        <td class="highlight">2.97</td>
+                        <td>4.91</td>
+                        <td>4.59<span style="font-size:0.7rem;color:#6b82a0;">(외고)</span></td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>통합(전계열)</td>
+                        <td>국영수사과</td>
+                        <td class="highlight">2.98</td>
+                        <td>4.57</td>
+                        <td>4.87<span style="font-size:0.7rem;color:#6b82a0;">(외고)</span></td>
+                        <td class="red">33.2:1</td>
+                        <td class="amber">51%</td>
+                    </tr>
+                    <tr>
+                        <td>약학대학</td>
+                        <td>국영수과</td>
+                        <td class="highlight">1.28</td>
+                        <td>1.95</td>
+                        <td>2.71</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>디자인(예능)</td>
+                        <td>국영<span style="color:#f59e0b;">사</span></td>
+                        <td class="highlight">2.03</td>
+                        <td>—</td>
+                        <td>2.77<span style="font-size:0.7rem;color:#6b82a0;">(예고)</span></td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="reveal" style="display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;">
+                <div style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);border-radius:10px;padding:8px 14px;font-size:0.76rem;color:#93c5fd;">
+                    💡 <strong>핵심 성적대:</strong> 일반고 기준 2등급 중후반~3등급 초반
+                </div>
+                <div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:8px 14px;font-size:0.76rem;color:#fcd34d;">
+                    ⚠️ 통합(전계열) 면접형 1단계 합격컷 &gt; 서류형 최종합격컷
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 5: 평가 비중 ===== -->
+    <div class="slide slide-5" data-slide="5">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:300px;height:300px;top:-60px;right:-80px;background:#7c3aed;opacity:0.10;"></div>
+            <div class="blob" style="width:250px;height:250px;bottom:-60px;left:-40px;background:#1d4ed8;opacity:0.08;"></div>
+        </div>
+        <div class="content">
+            <div class="section-divider reveal"></div>
+            <h2 class="reveal" style="font-family:'Noto Serif KR',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;margin-bottom:6px;">학생부종합 평가 역량 비중</h2>
+            <p class="reveal" style="font-size:0.78rem;color:#6b82a0;margin-bottom:20px;">2025 → 2026 변경 — 진로역량 10%p 상향</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:18px;">
+                <div class="glass-card reveal" style="text-align:center;border-top:3px solid #3b82f6;">
+                    <div style="font-size:2.4rem;font-weight:900;color:#60a5fa;line-height:1;" class="glow-pulse" data-count="40" data-suffix="%">0%</div>
+                    <div style="font-size:0.85rem;font-weight:700;margin:8px 0 4px;">📚 학업역량</div>
+                    <div style="font-size:0.72rem;color:#6b82a0;">기존 50% → <span style="color:#fca5a5;">-10%p</span></div>
+                    <div style="font-size:0.72rem;color:#a8bbd8;margin-top:8px;line-height:1.5;">원점수·평균·표준편차<br>주요교과 중점 평가</div>
+                </div>
+                <div class="glass-card reveal" style="text-align:center;border-top:3px solid #f59e0b;position:relative;overflow:hidden;">
+                    <div style="position:absolute;top:8px;right:8px;background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);border-radius:10px;padding:2px 8px;font-size:0.65rem;color:#fcd34d;font-weight:700;">🔥 강화</div>
+                    <div style="font-size:2.4rem;font-weight:900;color:#f59e0b;line-height:1;text-shadow:0 0 20px rgba(245,158,11,0.5);" data-count="40" data-suffix="%">0%</div>
+                    <div style="font-size:0.85rem;font-weight:700;margin:8px 0 4px;">🎯 진로역량</div>
+                    <div style="font-size:0.72rem;color:#6b82a0;">기존 30% → <span style="color:#6ee7b7;">+10%p</span></div>
+                    <div style="font-size:0.72rem;color:#a8bbd8;margin-top:8px;line-height:1.5;">전공관련 교과 이수<br>진로탐색 활동 경험</div>
+                </div>
+                <div class="glass-card reveal" style="text-align:center;border-top:3px solid #10b981;">
+                    <div style="font-size:2.4rem;font-weight:900;color:#10b981;line-height:1;" data-count="20" data-suffix="%">0%</div>
+                    <div style="font-size:0.85rem;font-weight:700;margin:8px 0 4px;">🤝 공동체역량</div>
+                    <div style="font-size:0.72rem;color:#6b82a0;">유지 (변경 없음)</div>
+                    <div style="font-size:0.72rem;color:#a8bbd8;margin-top:8px;line-height:1.5;">출결 · 협업 활동<br>미인정결석 1회까지 감점 無</div>
+                </div>
+            </div>
+            <div class="glass-card reveal" style="border-left:4px solid #f59e0b;">
+                <div style="font-size:0.82rem;color:#fcd34d;font-weight:700;margin-bottom:8px;">🎯 진로역량 40% 강화 핵심 포인트</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.76rem;color:#a8bbd8;line-height:1.6;">
+                    <div>✅ 전공 관련 교과 <strong style="color:#e8f0fe;">이수 여부</strong>가 결정적</div>
+                    <div>✅ 도전적 과목 선택 → 등급 낮아도 <strong style="color:#e8f0fe;">긍정 평가</strong></div>
+                    <div>✅ 공동교육과정 이수 과목도 <strong style="color:#e8f0fe;">반영</strong></div>
+                    <div>✅ 3년 생기부 일관된 진로 방향성 <strong style="color:#e8f0fe;">중요</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 6: 글문통 모의평가 비교 ===== -->
+    <div class="slide slide-6" data-slide="6">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:280px;height:280px;top:-60px;right:-60px;background:#1d4ed8;opacity:0.09;"></div>
+            <div class="blob" style="width:200px;height:200px;bottom:-50px;left:-30px;background:#10b981;opacity:0.07;"></div>
+        </div>
+        <div class="content">
+            <div class="section-divider reveal"></div>
+            <div class="reveal" style="display:flex;align-items:baseline;gap:12px;margin-bottom:6px;">
+                <h2 style="font-family:'Noto Serif KR',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:700;">글로벌문화통상학부 모의평가 3인 비교</h2>
+                <span class="badge badge-blue">경쟁률 19.85:1 | 40명 모집</span>
+            </div>
+            <p class="reveal" style="font-size:0.76rem;color:#6b82a0;margin-bottom:14px;">핵심 성적대: 2등급 중후반 ~ 3등급 초중반 | 일반고 최고점 2.79</p>
+            <table class="data-table reveal">
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>지원자 1번</th>
+                        <th>지원자 2번 ✅</th>
+                        <th>지원자 3번</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>결과</td>
+                        <td class="red">❌ 불합격</td>
+                        <td class="green">✅ 최초합격</td>
+                        <td class="amber">🔶 추가합격</td>
+                    </tr>
+                    <tr>
+                        <td>주요교과 평균</td>
+                        <td>2.98</td>
+                        <td class="highlight">3.32</td>
+                        <td>3.23</td>
+                    </tr>
+                    <tr>
+                        <td>영어 성적</td>
+                        <td>3.53</td>
+                        <td class="green">우수</td>
+                        <td class="highlight">2.63</td>
+                    </tr>
+                    <tr>
+                        <td>학업역량 평가</td>
+                        <td class="highlight">강우수 (4~5점)</td>
+                        <td>약우수 (3~4점)</td>
+                        <td>우수</td>
+                    </tr>
+                    <tr>
+                        <td>제2외국어(일어)</td>
+                        <td class="red">5~6등급</td>
+                        <td class="green">3등급</td>
+                        <td class="amber">미이수</td>
+                    </tr>
+                    <tr>
+                        <td>진로 방향</td>
+                        <td class="red">교육 분야 ⚠️</td>
+                        <td class="green">언어+문화통상 융합 🌏</td>
+                        <td class="amber">영문학 집중</td>
+                    </tr>
+                    <tr>
+                        <td>진로역량 결론</td>
+                        <td class="red">사범대 없음 → 감점</td>
+                        <td class="green">인재상 부합 → 합격</td>
+                        <td class="amber">어문계 집중 → 소폭 감점</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="glass-card reveal" style="margin-top:12px;border-left:4px solid #f59e0b;padding:10px 16px;">
+                <span style="font-size:0.78rem;color:#fcd34d;">⭐ 핵심 인사이트: </span>
+                <span style="font-size:0.78rem;color:#a8bbd8;">성적 자체는 세 학생 모두 합격 가능 범위 — <strong style="color:#e8f0fe;">진로역량(40%)에서 당락 결정.</strong> 글문통은 영어+문화통상 융합형 인재 선호</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 7: 진로 지도 포인트 ===== -->
+    <div class="slide slide-7" data-slide="7">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:300px;height:300px;top:-70px;right:-70px;background:#7c3aed;opacity:0.09;"></div>
+            <div class="blob" style="width:220px;height:220px;bottom:-50px;left:-40px;background:#1d4ed8;opacity:0.07;"></div>
+        </div>
+        <div class="content">
+            <div class="section-divider reveal"></div>
+            <h2 class="reveal" style="font-family:'Noto Serif KR',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;margin-bottom:16px;">교사 진학 지도 핵심 포인트</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div class="glass-card reveal" style="border-left:4px solid #3b82f6;">
+                    <div style="font-weight:700;font-size:0.85rem;color:#93c5fd;margin-bottom:8px;">📊 출결 및 성적 관련</div>
+                    <div style="font-size:0.76rem;color:#a8bbd8;line-height:1.8;">
+                        <div>• 미인정 결석 <strong style="color:#e8f0fe;">1회까지 감점 없음</strong></div>
+                        <div>• 성적 우상향 → <strong style="color:#e8f0fe;">정성 평가 반영</strong></div>
+                        <div>• 학교 재적 200명 이상이면 인원 크게 미영향</div>
+                        <div>• 진로선택 과목 우상향 → 사정관 인지함</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="border-left:4px solid #f59e0b;">
+                    <div style="font-weight:700;font-size:0.85rem;color:#fcd34d;margin-bottom:8px;">📝 생기부 기재 관련</div>
+                    <div style="font-size:0.76rem;color:#a8bbd8;line-height:1.8;">
+                        <div>• 행동특성·종합의견 <strong style="color:#e8f0fe;">기재량도 평가</strong></div>
+                        <div>• 행간의 의미 사정관이 읽음</div>
+                        <div>• 세특 서술어 단조로움보다 <strong style="color:#e8f0fe;">탐구 내용</strong> 중요</div>
+                        <div>• 봉사활동 전공 관련 시 가점 (불합격 요인 아님)</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="border-left:4px solid #10b981;">
+                    <div style="font-weight:700;font-size:0.85rem;color:#6ee7b7;margin-bottom:8px;">🎯 진로 및 과목 선택</div>
+                    <div style="font-size:0.76rem;color:#a8bbd8;line-height:1.8;">
+                        <div>• 공동교육과정 이수 과목 <strong style="color:#e8f0fe;">정성 반영</strong></div>
+                        <div>• 전공 필수 과목 미이수 → <strong style="color:#fca5a5;">치명적</strong></div>
+                        <div>• 어렵지만 필요한 과목 선택 → <strong style="color:#e8f0fe;">도전성 평가</strong></div>
+                        <div>• 계열 내 진로 변화 → 자율전공학부 유리</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="border-left:4px solid #8b5cf6;">
+                    <div style="font-weight:700;font-size:0.85rem;color:#c4b5fd;margin-bottom:8px;">💬 면접 준비 (면접형)</div>
+                    <div style="font-size:0.76rem;color:#a8bbd8;line-height:1.8;">
+                        <div>• 생기부 기반 일반면접 (10분)</div>
+                        <div>• 스마트폰 셀프촬영 면접 연습 권장</div>
+                        <div>• 인문계열도 <strong style="color:#e8f0fe;">자연계 과목 질문</strong> 가능</div>
+                        <div>• 면접 30% → 약 <strong style="color:#e8f0fe;">3% 합불 변동</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 8: 특수 전형 & 추천 학과 ===== -->
+    <div class="slide slide-8" data-slide="8">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:280px;height:280px;top:-60px;right:-60px;background:#ef4444;opacity:0.08;"></div>
+            <div class="blob" style="width:220px;height:220px;bottom:-50px;left:-30px;background:#f59e0b;opacity:0.07;"></div>
+        </div>
+        <div class="content">
+            <div class="section-divider reveal"></div>
+            <h2 class="reveal" style="font-family:'Noto Serif KR',serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:700;margin-bottom:16px;">특수 전형 · 입결 낮은 추천 학과</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                <div class="glass-card reveal" style="border-top:3px solid #3b82f6;">
+                    <div style="font-size:0.75rem;color:#93c5fd;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">⚓ 해군 계약학과</div>
+                    <div style="font-weight:700;font-size:0.9rem;margin-bottom:6px;">국방전략기술공학과</div>
+                    <div style="font-size:0.75rem;color:#a8bbd8;line-height:1.7;">
+                        <div>• 합격컷: <strong style="color:#60a5fa;">3등급 중반</strong></div>
+                        <div>• 경쟁률 약 6:1</div>
+                        <div>• 1단계 학종 100% → 2단계 면접 15% + 체력 15%</div>
+                        <div>• 군사 관련 생기부 없어도 합격 가능</div>
+                        <div>• 자연계열 학생 권장</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="border-top:3px solid #f59e0b;">
+                    <div style="font-size:0.75rem;color:#fcd34d;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">💼 조기취업형 계약학과</div>
+                    <div style="font-weight:700;font-size:0.9rem;margin-bottom:6px;">조기취업형 계약학과</div>
+                    <div style="font-size:0.75rem;color:#a8bbd8;line-height:1.7;">
+                        <div>• 합격 가능: <strong style="color:#fcd34d;">3~7등급</strong>도 합격 사례</div>
+                        <div>• 150명 모집 (기업별 2~3명)</div>
+                        <div>• 면접 90% — 기업 임원 평가 절대적</div>
+                        <div>• 3년 6학기 → 4년 학위 취득</div>
+                        <div>• 1학년 전액장학 + 2학년부터 <strong style="color:#fcd34d;">연 3천만원대</strong> 급여</div>
+                    </div>
+                </div>
+            </div>
+            <div class="reveal" style="margin-bottom:8px;font-size:0.8rem;color:#93c5fd;font-weight:700;">📌 입결 낮은 학과 (에리카 진학 희망하나 성적 부족 학생 추천)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+                <div class="glass-card reveal" style="text-align:center;padding:14px;">
+                    <div style="font-size:1.5rem;margin-bottom:6px;">🚛</div>
+                    <div style="font-weight:700;font-size:0.82rem;margin-bottom:4px;">교통물류공학과</div>
+                    <div class="badge badge-blue" style="margin:4px auto;display:inline-block;">자연계열 · 5명</div>
+                    <div style="font-size:0.72rem;color:#a8bbd8;margin-top:6px;line-height:1.5;">자연계 입결 최하위<br>물리·화학 기본이면 가능<br>경쟁률 낮음</div>
+                </div>
+                <div class="glass-card reveal" style="text-align:center;padding:14px;">
+                    <div style="font-size:1.5rem;margin-bottom:6px;">⚡</div>
+                    <div style="font-weight:700;font-size:0.82rem;margin-bottom:4px;">지능형시스템공학</div>
+                    <div class="badge badge-blue" style="margin:4px auto;display:inline-block;">자연계열 (사실상 물리)</div>
+                    <div style="font-size:0.72rem;color:#a8bbd8;margin-top:6px;line-height:1.5;">2년 연속 경쟁률 꼴찌<br>자연계 입결 최저<br>물리 관심 학생</div>
+                </div>
+                <div class="glass-card reveal" style="text-align:center;padding:14px;">
+                    <div style="font-size:1.5rem;margin-bottom:6px;">🌍</div>
+                    <div style="font-weight:700;font-size:0.82rem;margin-bottom:4px;">문화인류학과</div>
+                    <div class="badge badge-green" style="margin:4px auto;display:inline-block;">인문계열</div>
+                    <div style="font-size:0.72rem;color:#a8bbd8;margin-top:6px;line-height:1.5;">인문사회계 입결 최저<br>철학·사학 준비생 지원 가능<br>전공 배경 다양함</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 9: 2028 변경 ===== -->
+    <div class="slide slide-9" data-slide="9">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:300px;height:300px;top:-70px;right:-60px;background:#ef4444;opacity:0.10;"></div>
+            <div class="blob" style="width:240px;height:240px;bottom:-60px;left:-40px;background:#7c3aed;opacity:0.08;"></div>
+        </div>
+        <div class="content">
+            <div class="section-divider reveal"></div>
+            <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <h2 style="font-family:'Noto Serif KR',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;">2028학년도 주요 변경 사항</h2>
+                <span class="badge badge-red">미리 준비!</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                <div class="glass-card reveal" style="border-left:4px solid #ef4444;">
+                    <div style="font-size:0.75rem;color:#fca5a5;font-weight:700;margin-bottom:8px;">📉 교과 전형 변경</div>
+                    <div style="font-size:0.78rem;color:#a8bbd8;line-height:1.8;">
+                        <div>• 모집 인원: 531명 → <strong style="color:#fca5a5;">380명</strong> (-151명)</div>
+                        <div>• 수능 최저: 2합 7 → <strong style="color:#fca5a5;">2합 6 (강화)</strong></div>
+                        <div>• 아주대 수준(2합5)까지는 올리지 않음</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="border-left:4px solid #f59e0b;">
+                    <div style="font-size:0.75rem;color:#fcd34d;font-weight:700;margin-bottom:8px;">📋 학종 서류형 변경</div>
+                    <div style="font-size:0.78rem;color:#a8bbd8;line-height:1.8;">
+                        <div>• <strong style="color:#fcd34d;">수능 최저 학력 기준 신설</strong> (현재 없음)</div>
+                        <div>• 서류 100% 방식 유지</div>
+                        <div>• 수시 지원 전략 재검토 필요</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="border-left:4px solid #8b5cf6;">
+                    <div style="font-size:0.75rem;color:#c4b5fd;font-weight:700;margin-bottom:8px;">🎤 학종 면접형 확대</div>
+                    <div style="font-size:0.78rem;color:#a8bbd8;line-height:1.8;">
+                        <div>• 기존 전계열(60명)만 → <strong style="color:#c4b5fd;">반도체·바이오·컴퓨터 추가</strong></div>
+                        <div>• 면접 중요도 증가</div>
+                        <div>• 이공계 학생 면접 준비 강화 필요</div>
+                    </div>
+                </div>
+                <div class="glass-card reveal" style="border-left:4px solid #10b981;position:relative;overflow:hidden;">
+                    <div style="position:absolute;top:8px;right:8px;background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:2px 8px;font-size:0.65rem;color:#6ee7b7;font-weight:700;">5년만 부활</div>
+                    <div style="font-size:0.75rem;color:#6ee7b7;font-weight:700;margin-bottom:8px;">✍️ 논술 전형 부활</div>
+                    <div style="font-size:0.78rem;color:#a8bbd8;line-height:1.8;">
+                        <div>• <strong style="color:#6ee7b7;">5년 만에 논술 전형 부활</strong></div>
+                        <div>• 상세 내용 입학처 홈페이지 참조</div>
+                        <div>• 논술형 준비 학생 새로운 기회</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card reveal" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);padding:10px 16px;">
+                <span style="font-size:0.78rem;color:#fca5a5;font-weight:700;">⚠️ 2028 준비 핵심: </span>
+                <span style="font-size:0.78rem;color:#a8bbd8;">학종 서류형에도 수능 최저 도입 → 수능 준비 병행 필수 | 약학대 과고 지원 어려워질 전망</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 10: 마무리 ===== -->
+    <div class="slide slide-10" data-slide="10">
+        <div class="gradient-mesh">
+            <div class="blob" style="width:500px;height:500px;top:-120px;right:-100px;background:#1d4ed8;opacity:0.18;"></div>
+            <div class="blob" style="width:300px;height:300px;bottom:-80px;left:-60px;background:#7c3aed;opacity:0.14;"></div>
+            <div class="blob" style="width:200px;height:200px;top:40%;left:10%;background:#f59e0b;opacity:0.10;"></div>
+        </div>
+        <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1;"></canvas>
+        <div class="content text-center">
+            <div style="font-size:70px;margin-bottom:16px;animation:float 3.5s ease-in-out infinite;" class="reveal">📌</div>
+            <h2 class="reveal" style="font-family:'Noto Serif KR',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;background:linear-gradient(135deg,#60a5fa,#93c5fd,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;">진학 지도 핵심 요약</h2>
+            <p class="reveal" style="font-size:0.9rem;color:#a8bbd8;margin-bottom:24px;letter-spacing:2px;">한양대 에리카 ERICA 2026</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:left;" class="reveal">
+                <div class="glass-card" style="border-top:2px solid #3b82f6;">
+                    <div style="font-size:1.2rem;margin-bottom:6px;">📈</div>
+                    <div style="font-weight:700;font-size:0.82rem;color:#93c5fd;margin-bottom:6px;">핵심 성적대</div>
+                    <div style="font-size:0.75rem;color:#a8bbd8;line-height:1.6;">일반고 기준<br><strong style="color:#e8f0fe;">2등급 중후반~3등급 초반</strong><br>합격자의 약 80% 일반고</div>
+                </div>
+                <div class="glass-card" style="border-top:2px solid #f59e0b;">
+                    <div style="font-size:1.2rem;margin-bottom:6px;">🎯</div>
+                    <div style="font-weight:700;font-size:0.82rem;color:#fcd34d;margin-bottom:6px;">진로역량 40%</div>
+                    <div style="font-size:0.75rem;color:#a8bbd8;line-height:1.6;">전공 관련 과목 이수<br>3년 일관된 진로 방향<br><strong style="color:#e8f0fe;">성적보다 방향성이 당락</strong></div>
+                </div>
+                <div class="glass-card" style="border-top:2px solid #10b981;">
+                    <div style="font-size:1.2rem;margin-bottom:6px;">⚠️</div>
+                    <div style="font-weight:700;font-size:0.82rem;color:#6ee7b7;margin-bottom:6px;">2028 대비</div>
+                    <div style="font-size:0.75rem;color:#a8bbd8;line-height:1.6;">학종 수능 최저 신설<br>논술 부활<br><strong style="color:#e8f0fe;">수능 준비 병행 필수</strong></div>
+                </div>
+            </div>
+            <p class="reveal" style="font-size:0.75rem;color:#6b82a0;margin-top:20px;">문의: 한양대 에리카 입학처 | 자료 출처: 교사 대상 입시설명회 녹음 분석</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav-controls">
+    <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
+    <div class="slide-dots" id="dots"></div>
+    <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
+    <span class="slide-counter" id="counter">1 / 10</span>
+</div>
+
+<script>
+    let current = 1;
+    const total = document.querySelectorAll('.slide').length;
+    const dotsContainer = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+    for (let i = 1; i <= total; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 1 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+    }
+    function goToSlide(n) {
+        const prev = document.querySelector('.slide.active');
+        const next = document.querySelector('.slide[data-slide="' + n + '"]');
+        if (prev) prev.classList.remove('active');
+        if (next) { next.classList.add('active'); animateSlide(next); }
+        current = n; updateNav();
+    }
+    function changeSlide(dir) { let next = current + dir; if (next < 1) next = total; if (next > total) next = 1; goToSlide(next); }
+    function updateNav() {
+        document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === current));
+        counter.textContent = current + ' / ' + total;
+    }
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+    });
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+    document.addEventListener('touchend', (e) => { const diff = touchStartX - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1); });
+
+    function animateSlide(slide) {
+        slide.querySelectorAll('.reveal').forEach((el, i) => {
+            el.style.transition = 'none';
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.offsetHeight;
+            const delay = i * 0.07;
+            el.style.transition = 'opacity 0.35s ease ' + delay + 's, transform 0.35s ease ' + delay + 's';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0px)';
+        });
+        animateSlideEffects(slide);
+    }
+
+    function animateSlideEffects(slide) {
+        slide.querySelectorAll('[data-count]:not(.counted)').forEach(el => {
+            el.classList.add('counted');
+            const target = parseInt(el.dataset.count);
+            const suffix = el.dataset.suffix || '', prefix = el.dataset.prefix || '';
+            let cur = 0; const step = target / 40;
+            const timer = setInterval(() => { cur += step; if (cur >= target) { cur = target; clearInterval(timer); } el.textContent = prefix + Math.round(cur) + suffix; }, 30);
+        });
+        slide.querySelectorAll('.bar-fill:not(.fill-init)').forEach((bar, i) => {
+            bar.classList.add('fill-init');
+            bar.style.width = '0%'; bar.style.transition = 'width 0.6s ease ' + (i * 0.08) + 's';
+            bar.offsetHeight; bar.style.width = bar.dataset.width + '%';
+        });
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        const sp = document.querySelector('.mouse-spotlight');
+        if (sp) sp.style.background = 'radial-gradient(600px circle at ' + e.clientX + 'px ' + e.clientY + 'px, rgba(59,130,246,0.06), transparent 40%)';
+    });
+
+    window.initParticles = function(canvas, options) {
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+        const count = options.count || 40;
+        let mx = -1000, my = -1000;
+        const particles = Array.from({ length: count }, () => ({
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
+            size: Math.random() * 2 + 0.6, alpha: Math.random() * 0.3 + 0.08
+        }));
+        if (options.interactive) {
+            canvas.addEventListener('mousemove', (e) => { const r = canvas.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
+            canvas.addEventListener('mouseleave', () => { mx = -1000; my = -1000; });
+        }
+        (function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                if (options.interactive) { const dx = p.x - mx, dy = p.y - my, dist = Math.sqrt(dx*dx+dy*dy); if (dist < 100) { const f = (100-dist)/100*1.5; p.vx += (dx/dist)*f*0.08; p.vy += (dy/dist)*f*0.08; } }
+                p.vx *= 0.98; p.vy *= 0.98; p.x += p.vx; p.y += p.vy;
+                if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                ctx.fillStyle = 'rgba(59,130,246,' + p.alpha + ')'; ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        })();
+    };
+    document.querySelectorAll('.particle-canvas').forEach(c => window.initParticles(c, { interactive: true, count: 45 }));
+
+    try { animateSlide(document.querySelector('.slide.active')); } catch(e) {}
+</script>
+</body>
+</html>
